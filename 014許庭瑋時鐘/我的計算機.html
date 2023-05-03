@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background: url("https://images.unsplash.com/photo-1635070041409-e63e783ce3c1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1079&q=80");
+            /* background-color: #e8c5e3; */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+        }
+
+        table {
+            box-shadow: -5px -5px 15px #ffffff, 5px 5px 15px rgba(0, 0, 0, .16);
+            background: linear-gradient(#ff7cf1 0%, #f7aff0 50%, #ffcef9 100%);
+            font-family: sans-serif;
+            border-spacing: 20px;
+            border: none;
+            border-radius: 15px;
+        }
+
+
+        td {
+            height: 40px;
+            width: 40px;
+            font-size: 2rem;
+            text-align: center;
+            border-radius: 30px;
+            color: rgb(70, 70, 70);
+            padding: 15px;
+            margin: 8px;
+            border: none;
+            box-shadow: -5px -5px 12px #ffffff, 5px 5px 12px rgba(0, 0, 0, .16);
+            transition: 0.5s;
+        }
+
+        /* td:hover {
+            transform: translateY(-5px);
+            box-shadow: -0px -0px 17px #ffffff, 5px 5px 12px rgba(0, 0, 0, .16);
+
+        } */
+
+        td:active {
+            transform: translateY(5px);
+
+        }
+
+        #text {
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="1">
+        <tr>
+            <td colspan="4" id="text">0</td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td>/</td>
+            <td>*</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td rowspan="2">+</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>2</td>
+            <td>1</td>
+            <td rowspan="2">=</td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td colspan="2">.</td>
+        </tr>
+    </table>
+    <script>
+        const text = document.getElementById('text')
+        const btns = document.querySelectorAll('td:not(#text)')
+
+        for (const btn of btns) {
+            btn.addEventListener('click', () => {
+                const btnText = btn.innerText
+                const operators = ['+', '-', '*', '/']
+                const lastText = text.innerText[text.innerText.length - 1]
+                // 如果按鍵是 = 
+                if (btnText === '=') {
+                    // 如果最後一個字不是運算子，才計算
+                    if (!operators.includes(lastText)) {
+                        text.innerText = eval(text.innerText)
+                    }
+                }
+                // 如果按C, 歸0
+                else if (btnText === 'C') {
+                    text.innerText = 0
+                }
+                // 如果現在按鍵是0 按的是數字,把文字取代掉
+                else if (text.innerText === '0' && !isNaN(parseInt(btnText))) {
+                    text.innerText = btnText
+                }
+                // 如果最後一個是運算子
+                else if (operators.includes(lastText)) {
+                    // 現在按的不是運算子，才加上去
+                    // 第一行 如果最後一個是運算子的話 
+                    // 第二行 如果握按的數字不是運算子的話 加上去
+                    if (!operators.includes(btnText)) {
+                        text.innerText += btnText
+                    }
+                }
+                // 如果按的是 .
+                else if (btnText === '.') {
+                    let canAddDot = true
+                    // 從最後一個數字往前跑迴圈
+                    for (let i = text.innerText.length - 1; i >= 0; i--) {
+                        // 如果先遇到運算子一定可以先加
+                        if (operators.includes(text.innerText[i])) break
+                        // 如果先遇到 .，一定不能加 .
+                        if (text.innerText === '.') {
+                            canAddDot = false
+                            break
+                        }
+                    }
+                    //迴圈完可以加才
+                    if (canAddDot) text.innerText += '.'
+                }
+                // 如果最後一個字不是運算子 加上去
+                else {
+                    text.innerText += btnText
+                }
+            })
+
+        }
+
+        document.addEventListener('keydown', event => {
+            const btnText = event.key
+            const operators = ['+', '-', '*', '/']
+            const lastText = text.innerText[text.innerText.length - 1]
+            // 如果按的鍵是 =
+            if (btnText === '=' || btnText === 'Enter') {
+                if (!operators.includes(lastText)) {
+                    text.innerText = eval(text.innerText)
+                }
+                // 如果現在是 0，按的是數字，把文字取代
+            } else if (text.innerText === '0' && !isNaN(parseInt(btnText))) {
+                text.innerText = btnText
+            }
+            // 如果最後一個字是運算子
+            else if (operators.includes(lastText)) {
+                // 現在按的不是運算子，且是數字才加上去
+                if (!operators.includes(btnText) && !isNaN(parseInt(btnText))) {
+                    text.innerText += btnText
+                }
+            }
+            // 如果最後一個字不是運算子，且按的是數字或運算子，加上去
+            else if (!isNaN(parseInt(btnText)) || operators.includes(btnText)) {
+                text.innerText += btnText
+            }
+            // 如果按的是 .
+            else if (btnText === '.') {
+                let canAddDot = true
+                // 從最後一個字往前跑迴圈[]
+                for (let i = text.innerText.length - 1; i >= 0; i--) {
+                    // 如果先遇到運算子，一定可以加 .
+                    if (operators.includes(text.innerText[i])) break
+                    // 如果先遇到 .，一定不能加 .
+                    if (text.innerText[i] === '.') {
+                        canAddDot = false
+                        break
+                    }
+                }
+                // 迴圈完可以加才
+                if (canAddDot) text.innerText += '.'
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>
