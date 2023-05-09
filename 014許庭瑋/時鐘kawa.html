@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .background {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+
+            width: 40rem;
+            height: 30rem;
+            background-color: #fff;
+            padding: 0;
+            z-index: 1;
+            transition: 0.5s;
+        }
+
+        .box {
+            display: flex;
+            padding: 0;
+            min-width: 80%;
+            margin-top: auto;
+            margin-bottom: 6rem;
+            border-bottom: 1.3rem solid #000;
+            gap: 4rem;
+        }
+
+        .clock {
+            position: relative;
+            margin-left: 1rem;
+            margin-bottom: .7rem;
+            padding: 0;
+            border-radius: 50%;
+            border: .6rem solid #000;
+            align-self: flex-end;
+            width: 8rem;
+            height: 8rem;
+            background-color: #e7e2c4;
+        }
+
+        .left,
+        .right {
+            position: absolute;
+            top: 0;
+            width: 4rem;
+            height: 2rem;
+            padding: 0;
+            margin: 0;
+            border-top-left-radius: 5rem;
+            border-top-right-radius: 5rem;
+            background-color: #2b4763;
+            border-bottom: 0;
+
+        }
+
+        .left {
+            left: 0;
+            margin-top: -1.1rem;
+            margin-left: -2.2rem;
+            transform: rotate(-45deg);
+        }
+
+        .right {
+            right: 0;
+            margin-top: -1.1rem;
+            margin-right: -2.2rem;
+            transform: rotate(45deg);
+        }
+
+        .left::before,
+        .right::before {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 50%;
+            margin-top: -.6rem;
+            border-top-left-radius: 5rem;
+            border-top-right-radius: 5rem;
+            background: #952d45;
+            width: 1rem;
+            height: 0.5rem;
+            transform: translate(-50%, 0);
+        }
+
+        .legs_left,
+        .legs_right {
+            position: absolute;
+            width: 0.7rem;
+            height: 3rem;
+            z-index: -1;
+            transform-origin: top center;
+            background-color: #3f2c1b;
+
+        }
+
+        .legs_left {
+            bottom: -30%;
+            left: 30%;
+            transform: rotate(30deg);
+
+        }
+
+        .legs_right {
+            bottom: -30%;
+            right: 30%;
+            transform: rotate(-30deg);
+
+        }
+
+        .hour {
+            background-color: #000;
+            position: absolute;
+            width: 0.3rem;
+            height: 2rem;
+            top: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            /* transform: translate(-50%, -100%) rotate(45deg); */
+        }
+
+        .minutes {
+            position: absolute;
+            background-color: #000;
+            width: 0.15rem;
+            height: 2.5rem;
+            top: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            /* transform: translate(-50%, -100%) rotate(180deg); */
+        }
+
+        .seconds {
+            position: absolute;
+            background-color: #000;
+            width: 0.1rem;
+            height: 3rem;
+            top: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            /* transform: translate(-50%, -100%) rotate(270deg); */
+        }
+
+        .seconds::before {
+            position: absolute;
+            content: '';
+            border-radius: 50%;
+            width: 0.6rem;
+            height: 0.6rem;
+            top: 100%;
+            background-color: #952d45;
+            transform: translate(-50%, -50%);
+            padding: 0;
+
+        }
+
+        .books {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 10rem;
+            padding: 0;
+            margin: 0;
+            /* background-color: #aaa; */
+        }
+
+        .books>div {
+            width: 2.3rem;
+
+        }
+
+        .books>div:nth-child(1) {
+            position: relative;
+            height: 11rem;
+            background: linear-gradient(90deg, #ffa395 50%, #d98b7f 50%);
+        }
+
+        .books>div:nth-child(1)::before {
+            position: absolute;
+            content: '';
+            height: 1.4rem;
+            width: 100%;
+            top: 1.1rem;
+            left: 0;
+            background: linear-gradient(90deg, #d6ffeeae 50%, #baddcfae 50%);
+
+        }
+
+        .books>div:nth-child(2) {
+            position: relative;
+            height: 13rem;
+            background: linear-gradient(90deg, #94adb2 50%, #7e9398 50%);
+        }
+
+        .books>div:nth-child(2)::before {
+            position: absolute;
+            content: '';
+            height: 1.4rem;
+            width: 100%;
+            top: 1.1rem;
+            left: 0;
+            background: linear-gradient(90deg, #d6ffeeae 50%, #baddcfae 50%);
+        }
+
+        .books>div:nth-child(3) {
+            position: relative;
+            height: 15rem;
+            background: linear-gradient(90deg, #ffca72 50%, #d9ac61 50%);
+
+        }
+
+        .books>div:nth-child(3)::before {
+            position: absolute;
+            content: '';
+            height: 1.4rem;
+            width: 100%;
+            top: 1.1rem;
+            left: 0;
+            background: linear-gradient(90deg, #d6ffeeae 50%, #baddcfae 50%);
+        }
+
+        .mode-switch {
+            width: 40rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-left: auto;
+
+        }
+
+        .mode-switch__toggle {
+            background-color: purple;
+            height: 100%;
+            width: 70px;
+            padding: 5px;
+            border-radius: 100px;
+            cursor: pointer;
+        }
+
+        .mode-switch__circle {
+            width: 25px;
+            height: 25px;
+            border-radius: 100px;
+            background-color: #fff;
+            pointer-events: none;
+            transition: transform 0.3s ease;
+
+        }
+
+        .background-dark {
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background ">
+        <div class="box">
+            <div class="clock">
+                <div class="left"></div>
+                <div class="right"></div>
+                <div class="hour"></div>
+                <div class="minutes"></div>
+                <div class="seconds"></div>
+                <div class="legs_left"></div>
+                <div class="legs_right"></div>
+            </div>
+            <div class="books">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div class="mode-switch">
+            <span>亮</span>
+            <div class="mode-switch__toggle">
+                <div class="mode-switch__circle"></div>
+            </div>
+            <span>暗</span>
+        </div>
+    </div>
+    <script src="./jquery-3.6.4.min.js"></script>
+    <script>
+        let hour_hand = document.querySelector('.hour')
+        let minutes_hand = document.querySelector('.minutes')
+        let seconds_hand = document.querySelector('.seconds')
+        let clock = document.querySelector('.clock');
+        let interval = setInterval(function () {
+            let date = new Date()
+            let hour = date.getHours() * 30
+            let minutes = date.getMinutes() * 6
+            let seconds = date.getSeconds() * 6
+            hour_hand.style.transform = `translate(-50%, -100%) rotate(${hour}deg)`
+            minutes_hand.style.transform = `translate(-50%, -100%) rotate(${minutes}deg)`
+            seconds_hand.style.transform = `translate(-50%, -100%) rotate(${seconds}deg)`
+        })
+
+        let isMovedRight = false;
+        // $('.mode-switch__toggle').click(function () {
+        //     if (isMovedRight) {
+        //         $('.mode-switch__circle').css('transform', 'translateX(0)')
+        //         $('.background').css('background', '#fff')
+        //         isMovedRight = false
+        //     } else {
+        //         $('.mode-switch__circle').css('transform', 'translateX(35px)')
+        //         $('.background').css('background', '#565656')
+
+        //         isMovedRight = true
+
+        //     }
+        // })
+
+        const mode_switch_toggle = document.querySelector('.mode-switch__toggle')
+        const mode_switch_circle = document.querySelector('.mode-switch__circle')
+        const background = document.querySelector('.background')
+
+        mode_switch_toggle.addEventListener('click', function () {
+            if (isMovedRight) {
+                mode_switch_circle.style.transform = 'translateX(0)'
+                background.style.background = '#fff'
+                isMovedRight = false
+            } else {
+                mode_switch_circle.style.transform = 'translateX(35px)'
+                background.style.background = '#565656'
+                isMovedRight = true
+            }
+        })
+
+    </script>
+</body>
+
+</html>
